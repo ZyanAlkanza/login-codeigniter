@@ -12,10 +12,10 @@ class Home extends BaseController
         $this->user = new UserModel();
     }
 
-    public function index(): string
+    public function index()
     {
         if (!session()->has('id')) {
-            return view('login');
+            return redirect()->to(site_url('login'))->with('error', 'Please login first!');
         }
         $id = session()->get('id');
         $userModel = new UserModel();
@@ -118,10 +118,13 @@ class Home extends BaseController
 
             $image->move(ROOTPATH . 'public/assets/profile', $imageName);
 
+            $token = sprintf("%05d", rand(0, 99999));
+
             $data = [
                 'username' => $this->request->getPost('username'),
                 'email'    => $this->request->getPost('email'),
                 'image'    => $imageName,
+                'token'    => $token,
                 'password' => password_hash($this->request->getPost('password'), PASSWORD_BCRYPT),
                 
             ];
@@ -135,5 +138,115 @@ class Home extends BaseController
     {
         session()->remove('id');
         return redirect()->to(site_url('login'));
+    }
+
+    public function forgot()
+    {
+        return view('forgot');
+    }
+
+    public function postforgot()
+    {
+        $validation = \Config\Services::validation();
+        $validation->setRules([
+            'email' => 'required|valid_email',
+        ], [
+            'email' => [
+                'required'    => 'The email field is required.',
+                'valid_email' => 'Your email is invalid',
+            ],
+        ]);
+
+        if ($validation->withRequest($this->request)->run()) {
+            $email = $this->request->getPost('email');
+            $user = $this->user->where('email', $email)->first();
+
+            if ($user) {
+                $token = sprintf("%05d", rand(0, 99999));
+                $data = [
+                    'email' => $email,
+                    'token' => $token,
+                ];
+
+                $this->user->update($user['id'], $data);
+
+                $to = $data['email'];
+                $subject = 'Reset password link';
+                $no_token = $token;
+                $message = 'Hi ' . $user['username'] . '<br>' .
+                        '<br>We have received your request to reset your password<br>' .
+                        '<br>This is your unique code<br>' .
+                        $no_token;
+
+                $email = \Config\Services::email();
+                $email->setTo($to);
+                $email->setFrom('akun18download@gmail.com', 'Test');
+                $email->setSubject($subject);
+                $email->setMessage($message);
+
+                if ($email->send()) {
+                    return redirect()->to(site_url('reset'))->with('message', 'The reset link has been sent,'.'<br>'.' Please check your email!');
+                } else {
+                    return redirect()->to(site_url('forgot'))->with('error', 'The reset link failed to send');
+                }
+            } else {
+                return redirect()->back()->with('error', 'Your email doesnt exist');
+            }
+        } else {
+            return view('forgot');
+        }
+    }
+
+    public function reset()
+    {
+        return view('reset');
+    }
+
+    public function postreset()
+    {
+        $validation = \Config\Services::validation();
+        $validation->setRules([
+            'email'     => 'required|valid_email',
+            'token'     => 'required',
+            'password'  => 'required|min_length[8]',
+            'pass-confirm' => 'required|matches[password]',
+        ], [
+            'email' => [
+                'required'    => 'The email field is required.',
+                'valid_email' => 'Your email is invalid',
+            ],
+            'token' => [
+                'required'    => 'The token field is required.',
+            ],
+            'password' => [
+                'required'    => 'The password field is required.',
+                'min_length'  => 'Password must be 8 or more characters',
+            ],
+            'pass-confirm' => [
+                'required'    => 'The password field is required.',
+                'matches'     => 'Your password doesnt match',
+            ],
+            
+        ]);
+
+        if (! $validation->withRequest($this->request)->run()) {
+            return view('reset');
+        }else{
+            $email    = $this->request->getPost('email');
+            $token    = $this->request->getPost('token');
+            $password = password_hash($this->request->getPost('password'), PASSWORD_BCRYPT);
+
+            $user = ($this->user->where('token', $token))->where('email', $email)->first();
+
+            if($user){
+                $data = [
+                    'password' => $password,
+                ];
+                $this->user->update($user['id'], $data);
+                return redirect()->to(site_url('login'))->with('message', 'Password reset successfully, Please Login!');
+            }else{
+                return redirect()->to(site_url('reset'))->with('error', 'Password reset failed,'.'<br>'.'Your email or unique code is invalid!');
+            }
+        }
     }
 }

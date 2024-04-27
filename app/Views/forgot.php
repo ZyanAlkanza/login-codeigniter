@@ -1,7 +1,7 @@
 <?= $this->extend('main_layout') ?>
 
 <?= $this->section('title') ?>
-    <title>Login</title>
+    <title>Forgot Password</title>
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
@@ -20,14 +20,14 @@
         </article>
         <article class="w-80 p-5 rounded-xl bg-gray-100">
             <div class="title">
-                <h1 class="text-center text-xl font-semibold text-blue-500 mb-4">Login</h1>
+                <h1 class="text-center text-xl font-semibold text-blue-500 mb-4">Forgot Password</h1>
             </div>
             <div class="content">
 
                 <?php $validation = \Config\Services::validation();?>
-                <form action="<?= site_url('/postlogin')?>" method="post" autocomplete="off">
+                <form action="<?= site_url('/postforgot')?>" method="post" autocomplete="off">
                     <?= csrf_field() ?>
-                    <div class="email flex flex-col mb-3">
+                    <div class="email flex flex-col mb-5">
                         <label for="email">Email</label>
                         <input type="email" name="email" id="email" class="px-2 py-1 rounded focus:outline-none border-2 focus:border-2 border-white focus:border-blue-500" required>
                         <div class="message h-4">
@@ -36,28 +36,11 @@
                             <?php endif;?>
                         </div>
                     </div>
-                    <div class="password flex flex-col mb-5">
-                        <div class="content flex justify-between">
-                            <label for="password">Password</label>
-                            <a href="<?= site_url('/forgot')?>" class="text-blue-500 hover:text-blue-700 text-sm font-light ">Forgot Password?</a>
-                        </div>
-                        <input type="password" name="password" id="password" class="px-2 py-1 rounded focus:outline-none border-2 focus:border-2 border-white focus:border-blue-500" required>
-                        <div class="message h-4">
-                            <?php if ($validation->hasError('password')):?>
-                                <small class="text-red-500 font-semibold"><?= $validation->getError('password');?></small>
-                            <?php endif;?>
-                        </div>
-                    </div>
                     <div class="button flex">
-                        <button type="submit" class="w-full px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded transition hover:duration-500 ease-in-out">Login<i class="ri-arrow-right-line ml-2"></i></button>
+                        <button type="submit" class="w-full px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded transition hover:duration-500 ease-in-out">Reset Password<i class="ri-arrow-right-line ml-2"></i></button>
                     </div>
                 </form>
 
-            </div>
-            <div class="content mt-4">
-                <div class="register">
-                    <h5 class="text-sm text-center">Don't have an account? <a href="<?= site_url('register')?>" class="text-blue-500 hover:text-blue-700 font-semibold">Register</a></h5>
-                </div>
             </div>
         </article>
     </main>
