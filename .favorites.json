@@ -1,0 +1,47 @@
+[
+    {
+        "type": "Directory",
+        "name": "c:\\laragon\\www\\login_codeigniter\\app\\Controllers",
+        "parent_id": null,
+        "fsPath": "c:\\laragon\\www\\login_codeigniter\\app\\Controllers",
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "Dumxd7XjF6l2WEPk"
+    },
+    {
+        "type": "Directory",
+        "name": "c:\\laragon\\www\\login_codeigniter\\app\\Database\\Migrations",
+        "parent_id": null,
+        "fsPath": "c:\\laragon\\www\\login_codeigniter\\app\\Database\\Migrations",
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "ZBePFosMyWtfnuJ9"
+    },
+    {
+        "type": "Directory",
+        "name": "c:\\laragon\\www\\login_codeigniter\\app\\Models",
+        "parent_id": null,
+        "fsPath": "c:\\laragon\\www\\login_codeigniter\\app\\Models",
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "EngQyR5J4aovMVsc"
+    },
+    {
+        "type": "Directory",
+        "name": "c:\\laragon\\www\\login_codeigniter\\app\\Views",
+        "parent_id": null,
+        "fsPath": "c:\\laragon\\www\\login_codeigniter\\app\\Views",
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "2XcBgC4etHnmuYvh"
+    },
+    {
+        "type": "File",
+        "name": "c:\\laragon\\www\\login_codeigniter\\app\\Config\\Routes.php",
+        "parent_id": null,
+        "fsPath": "c:\\laragon\\www\\login_codeigniter\\app\\Config\\Routes.php",
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "sfTwiWFVYDJ2tpdC"
+    }
+]
